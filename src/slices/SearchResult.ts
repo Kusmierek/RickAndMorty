@@ -10,6 +10,7 @@ export interface SearchResultsTypes {
   isFailed: boolean;
   isLoading: boolean;
   pageCurrent: number;
+  message: string;
 }
 
 const initialState: SearchResultsTypes = {
@@ -22,6 +23,7 @@ const initialState: SearchResultsTypes = {
   characters: [],
   isFailed: false,
   isLoading: false,
+  message: '',
   pageCurrent: 0,
 };
 
@@ -33,8 +35,10 @@ export const SearchResult = createSlice({
       state: SearchResultsTypes,
       action: PayloadAction<{ info: Info; results: Character[] }>
     ) {
+      state.isLoading = false;
       state.info = action.payload.info;
       state.characters = action.payload.results;
+      state.isFailed = false;
     },
     setPage(state: SearchResultsTypes, action: PayloadAction<number>) {
       state.pageCurrent = action.payload;
@@ -45,7 +49,20 @@ export const SearchResult = createSlice({
     ) {
       state.characters = action.payload;
     },
+    ActionFailed(state: SearchResultsTypes, action: PayloadAction<string>) {
+      state.isFailed = true;
+      state.message = action.payload;
+    },
+    StartLoadingAction(state: SearchResultsTypes) {
+      state.isLoading = true;
+    },
   },
 });
 
-export const { GetFetchResults, setPage, setChracters } = SearchResult.actions;
+export const {
+  GetFetchResults,
+  setPage,
+  setChracters,
+  ActionFailed,
+  StartLoadingAction,
+} = SearchResult.actions;

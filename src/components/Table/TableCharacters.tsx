@@ -1,5 +1,6 @@
 import {
   Paper,
+  styled,
   Table,
   TableBody,
   TableCell,
@@ -11,7 +12,7 @@ import {
   TableSortLabel,
   Typography,
 } from '@mui/material';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { StateType } from '../../store';
 import { Character } from '../../libs/types/Character';
@@ -19,13 +20,18 @@ import TablePaginationCustom from '../TablePagination/TablePaginationCustom';
 import { Info } from '../../libs/types/info';
 import { usePagination } from '../hooks/usePagination';
 import useSort from '../hooks/useSort';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 export interface StateCharacter {
   characters: Character[];
   info: Info;
   pageCurrent: number;
 }
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: #000000;
+`;
 
 export const TableCharacters = () => {
   const { characters, info, pageCurrent } = useSelector<
@@ -41,6 +47,7 @@ export const TableCharacters = () => {
   const { setParams } = usePagination();
   const { sortByKey } = useSort();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [sort, setSort] = useState(true);
 
   const handleChangePage = useCallback(
     (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
@@ -63,7 +70,11 @@ export const TableCharacters = () => {
             <TableCell align="right">{el.name}</TableCell>
             <TableCell align="right">{el.status}</TableCell>
             <TableCell align="right">{el.species}</TableCell>
-            <TableCell align="right">{el.url.toString()}</TableCell>
+            <TableCell align="right">
+              <StyledLink to={`/table/character/${el.id}`} className="nav-el">
+                {el.url.toString()}
+              </StyledLink>
+            </TableCell>
           </TableRow>
         );
       }),
@@ -75,7 +86,7 @@ export const TableCharacters = () => {
       <TableContainer
         component={Paper}
         sx={{
-          width: '90%',
+          width: '100%',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -88,14 +99,26 @@ export const TableCharacters = () => {
         <Table sx={{ width: '100%' }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>
-                <Typography variant="h6" gutterBottom>
-                  Id
-                </Typography>
+              <TableCell align="right">
+                <TableSortLabel
+                  onClick={() => {
+                    sortByKey('id', characters, sort);
+                    setSort(!sort);
+                  }}
+                  direction={sort ? 'desc' : 'asc'}
+                >
+                  <Typography variant="h6" gutterBottom>
+                    Id
+                  </Typography>
+                </TableSortLabel>
               </TableCell>
               <TableCell align="right">
                 <TableSortLabel
-                  onClick={() => sortByKey('name', characters, true)}
+                  onClick={() => {
+                    sortByKey('name', characters, sort);
+                    setSort(!sort);
+                  }}
+                  direction={sort ? 'desc' : 'asc'}
                 >
                   <Typography variant="h6" gutterBottom>
                     Name
@@ -104,7 +127,11 @@ export const TableCharacters = () => {
               </TableCell>
               <TableCell align="right">
                 <TableSortLabel
-                  onClick={() => sortByKey('status', characters, true)}
+                  onClick={() => {
+                    sortByKey('status', characters, sort);
+                    setSort(!sort);
+                  }}
+                  direction={sort ? 'desc' : 'asc'}
                 >
                   <Typography variant="h6" gutterBottom>
                     Status
@@ -113,7 +140,11 @@ export const TableCharacters = () => {
               </TableCell>
               <TableCell>
                 <TableSortLabel
-                  onClick={() => sortByKey('species', characters, true)}
+                  onClick={() => {
+                    sortByKey('species', characters, sort);
+                    setSort(!sort);
+                  }}
+                  direction={sort ? 'desc' : 'asc'}
                 >
                   <Typography variant="h6" gutterBottom>
                     Species

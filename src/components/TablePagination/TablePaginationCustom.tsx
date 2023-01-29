@@ -28,8 +28,6 @@ export interface StateInfo {
 
 const TablePaginationCustom = (props: TablePaginationActionsProps) => {
   const { count, onPageChange, rowsPerPage, page } = props;
-  const dispatch = useDispatch();
-  const { fetchData } = useFetch();
   const { info } = useSelector<StateType, StateInfo>((state) => {
     return {
       info: state.searchResult.info,
@@ -59,7 +57,7 @@ const TablePaginationCustom = (props: TablePaginationActionsProps) => {
   const handleLastPageButtonClick = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
-    onPageChange(event, 42);
+    onPageChange(event, info.pages);
   };
 
   return (
@@ -80,7 +78,7 @@ const TablePaginationCustom = (props: TablePaginationActionsProps) => {
       </IconButton>
       <IconButton
         onClick={handleNextButtonClick}
-        disabled={page == 42}
+        disabled={page == info.pages}
         aria-label="next page"
       >
         <KeyboardArrowRight />
@@ -88,7 +86,7 @@ const TablePaginationCustom = (props: TablePaginationActionsProps) => {
       <IconButton
         onClick={handleLastPageButtonClick}
         aria-label="last page"
-        disabled={page == 42}
+        disabled={page == info.pages}
       >
         <LastPageIcon />
       </IconButton>

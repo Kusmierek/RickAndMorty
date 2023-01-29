@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Button, TextField } from '@mui/material';
+import { Button, FormControl, TextField } from '@mui/material';
 import { usePagination } from '../hooks/usePagination';
 
 export interface InputType {
@@ -27,19 +27,23 @@ const Input = () => {
   };
 
   return (
-    <form action="" onSubmit={handleSubmit(onSubmit)}>
+    <FormControl sx={{ mt: 10 }}>
       <TextField
         id="standard-basic"
-        label="Standard"
+        label="Name"
         variant="standard"
         type="text"
         defaultValue={''}
         {...register('name')}
       />
-      <Button variant="contained" type="submit">
+      <Button
+        variant="contained"
+        type="submit"
+        onClick={handleSubmit(onSubmit)}
+      >
         Submit
       </Button>
-    </form>
+    </FormControl>
   );
 };
 
