@@ -19,6 +19,7 @@ import TablePaginationCustom from '../TablePagination/TablePaginationCustom';
 import { Info } from '../../libs/types/info';
 import { usePagination } from '../hooks/usePagination';
 import useSort from '../hooks/useSort';
+import { useSearchParams } from 'react-router-dom';
 
 export interface StateCharacter {
   characters: Character[];
@@ -39,22 +40,30 @@ export const TableCharacters = () => {
   });
   const { setParams } = usePagination();
   const { sortByKey } = useSort();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleChangePage = useCallback(
     (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
-      setParams(`?page=${newPage}`);
+      const name = searchParams.get('name');
+      if (name != null) {
+        setParams(`?page=${newPage}&name=${name}`);
+      } else {
+        setParams(`?page=${newPage}`);
+      }
     },
-    []
+    [searchParams]
   );
 
   const resultItems = useMemo(
     () =>
-      characters.map((el: Record<string, any>) => {
+      characters.map((el: Character) => {
         return (
-          <TableRow key={el.name}>
+          <TableRow key={el.id}>
             <TableCell align="right">{el.id}</TableCell>
             <TableCell align="right">{el.name}</TableCell>
             <TableCell align="right">{el.status}</TableCell>
+            <TableCell align="right">{el.species}</TableCell>
+            <TableCell align="right">{el.url.toString()}</TableCell>
           </TableRow>
         );
       }),
@@ -94,8 +103,26 @@ export const TableCharacters = () => {
                 </TableSortLabel>
               </TableCell>
               <TableCell align="right">
+                <TableSortLabel
+                  onClick={() => sortByKey('status', characters, true)}
+                >
+                  <Typography variant="h6" gutterBottom>
+                    Status
+                  </Typography>
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  onClick={() => sortByKey('species', characters, true)}
+                >
+                  <Typography variant="h6" gutterBottom>
+                    Species
+                  </Typography>
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
                 <Typography variant="h6" gutterBottom>
-                  Status
+                  Url
                 </Typography>
               </TableCell>
             </TableRow>

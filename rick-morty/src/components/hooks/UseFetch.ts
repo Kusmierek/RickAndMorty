@@ -12,7 +12,6 @@ export function useFetch() {
   const fetchData = async () => {
     const newPage = searchParams.get('page');
     const name = searchParams.get('name');
-
     try {
       const response = await axios.get(URL, {
         params: { page: newPage, name: name },

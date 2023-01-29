@@ -39,22 +39,13 @@ export const SearchResult = createSlice({
     setPage(state: SearchResultsTypes, action: PayloadAction<number>) {
       state.pageCurrent = action.payload;
     },
-
-    // Previous(state: SearchResultsTypes) {
-    //   console.log('klik');
-    //   if (state.info.prev !== null) {
-    //     console.log('klik');
-    // const url = new URLSearchParams(new URL(state.info.prev).search);
-    // const getUrl = url.get('page')
-    //     //@ts-ignore
-    // const { setParams } = useParams();
-    // setParams(getUrl);
-    //     console.log(url);
-    //     console.log(getUrl);
-    //     // setSearchParams({ page: `${getUrl}` });
-    //   }
-    // },
+    setChracters(
+      state: SearchResultsTypes,
+      action: PayloadAction<Array<Character>>
+    ) {
+      state.characters = action.payload;
+    },
   },
 });
 
-export const { GetFetchResults, setPage } = SearchResult.actions;
+export const { GetFetchResults, setPage, setChracters } = SearchResult.actions;

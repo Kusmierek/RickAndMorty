@@ -25,7 +25,7 @@ const Characters = () => {
     <Box
       sx={{
         display: 'flex',
-        height: '150vh',
+        height: '180vh',
         width: '90%',
         justifyContent: 'center',
         alignItems: 'center',

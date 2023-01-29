@@ -23,8 +23,7 @@ const Input = () => {
   const { setParams } = usePagination();
 
   const onSubmit = (data: InputType) => {
-    setParams(`?name=${data.name}`);
-    console.log(data);
+    setParams(`?page=1&name=${data.name}`);
   };
 
   return (
